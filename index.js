@@ -52,16 +52,29 @@ exports.InViewPort = class extends Component {
   }
 
   isInViewPort() {
-    const window = Dimensions.get('window')
+  	/*************************************************************
+  		MY CUSTOM LOGIC
+  		
+  		rectTop => koordinat bagian atas container di layar
+  		rectBottom => koordinat bagian bawah container di layar
+  	
+  		untuk trigger ketika container terlihat 50% dari layar maka:
+  		### rectTop <= tinggi layar - (tinggi layar/2)
+  		
+  		NOTE: tabbar & sticky view = 104
+    *************************************************************/
+    
+    const window = Dimensions.get('window');
     const isVisible =
-      this.state.rectBottom != 0 &&
-      this.state.rectTop >= 0 &&
-      this.state.rectBottom <= window.height &&
+      this.state.rectBottom !== 0 &&
+      this.state.rectBottom >= 0 &&
+      this.state.rectTop <= window.height - window.height/2 &&
       this.state.rectWidth > 0 &&
-      this.state.rectWidth <= window.width
+      this.state.rectWidth <= window.width;
+
     if (this.lastValue !== isVisible) {
-      this.lastValue = isVisible
-      this.props.onChange(isVisible)
+      this.lastValue = isVisible;
+      this.props.onChange(isVisible);
     }
   }
 
