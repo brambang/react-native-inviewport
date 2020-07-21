@@ -18,7 +18,7 @@ export default class InViewPort extends Component {
     this.state = { rectTop: 0, rectBottom: 0, rectWidth: 0, didUpdate: true }
     this.count = 0;
     this.viewScreen = this.props.viewScreen ? this.props.viewScreen : 1;
-    this.didUpdate = this.props.didUpdate ? true : false;
+    this.didUpdate = this.props.didUpdate === undefined ? true : this.props.didUpdate;
   }
 
   componentDidMount() {
@@ -72,7 +72,7 @@ export default class InViewPort extends Component {
       this.state.rectWidth > 0 &&
       this.state.rectWidth <= window.width;
 
-    if (this.lastValue !== isVisible && this.didUpdate) {
+    if (this.lastValue !== isVisible && this.state.didUpdate) {
       this.lastValue = isVisible;
       this.props.onChange(isVisible);
 
