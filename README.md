@@ -59,3 +59,11 @@ render() {
   );
 }
 ```
+
+<H2>Props</H2>
+Here is props you can use
+	
+- ```onChange``` : callback	(required)
+- ```delay``` : number in miliseconds (default: 100)
+- ```viewScreen``` : percentage	(default: 1)
+- ```didUpdate``` : boolean	(default: true)
