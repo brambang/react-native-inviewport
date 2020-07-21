@@ -18,7 +18,7 @@ export default class InViewPort extends Component {
     this.state = { rectTop: 0, rectBottom: 0, rectWidth: 0, didUpdate: true }
     this.count = 0;
     this.viewScreen = this.props.viewScreen ? this.props.viewScreen : 1;
-    this.didUpdate = this.props.didUpdate ? this.props.didUpdate : true;
+    this.didUpdate = this.props.didUpdate ? true : false;
   }
 
   componentDidMount() {
