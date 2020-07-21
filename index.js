@@ -1,12 +1,22 @@
 'use strict';
 
+/*************************************************************
+	MY CUSTOM PROPS
+	
+	onChange		=> callback		(required)
+	delay				=> number			(default: 100)
+	viewScreen	=> percentage	(default: 1)
+	didUpdate		=> boolean		(default: true)
+*************************************************************/
+
 import React, { Component } from 'react'
 import { View, Dimensions } from 'react-native'
 
 export default class InViewPort extends Component {
   constructor(props) {
     super(props)
-    this.state = { rectTop: 0, rectBottom: 0 }
+    this.state = { rectTop: 0, rectBottom: 0, rectWidth: 0, didUpdate: true }
+    this.count = 0;
   }
 
   componentDidMount() {
@@ -51,30 +61,24 @@ export default class InViewPort extends Component {
     this.interval = clearInterval(this.interval)
   }
 
-  isInViewPort() {
-  	/*************************************************************
-  		MY CUSTOM LOGIC
-  		
-  		rectTop => koordinat bagian atas container di layar
-  		rectBottom => koordinat bagian bawah container di layar
-  	
-  		untuk trigger ketika container terlihat 50% dari layar maka:
-  		### rectTop <= tinggi layar - (tinggi layar/2)
-  		
-  		NOTE: tabbar & sticky view = 104
-    *************************************************************/
-    
+  isInViewPort() { 
     const window = Dimensions.get('window');
     const isVisible =
       this.state.rectBottom !== 0 &&
       this.state.rectBottom >= 0 &&
-      this.state.rectTop <= window.height - window.height/2 &&
+      this.state.rectTop <= window.height - (window.height*this.props.viewScreen/100) &&
       this.state.rectWidth > 0 &&
       this.state.rectWidth <= window.width;
 
-    if (this.lastValue !== isVisible) {
+    if (this.lastValue !== isVisible && this.state.didUpdate) {
       this.lastValue = isVisible;
       this.props.onChange(isVisible);
+
+      if (this.count === 1) {
+      	this.setState({ didUpdate: this.props.didUpdate })
+      }
+
+      this.count++;
     }
   }
 
