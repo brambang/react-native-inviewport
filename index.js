@@ -4,7 +4,7 @@
 	MY CUSTOM PROPS
 	
 	onChange		=> callback		(required)
-	delay				=> number			(default: 100)
+	delay				=> number in miliseconds (default: 100)
 	viewScreen	=> percentage	(default: 1)
 	didUpdate		=> boolean		(default: true)
 *************************************************************/
@@ -17,6 +17,8 @@ export default class InViewPort extends Component {
     super(props)
     this.state = { rectTop: 0, rectBottom: 0, rectWidth: 0, didUpdate: true }
     this.count = 0;
+    this.viewScreen = this.props.viewScreen ? this.props.viewScreen : 1;
+    this.didUpdate = this.props.didUpdate ? this.props.didUpdate : true;
   }
 
   componentDidMount() {
@@ -66,16 +68,16 @@ export default class InViewPort extends Component {
     const isVisible =
       this.state.rectBottom !== 0 &&
       this.state.rectBottom >= 0 &&
-      this.state.rectTop <= window.height - (window.height*this.props.viewScreen/100) &&
+      this.state.rectTop <= window.height - (window.height*this.viewScreen/100) &&
       this.state.rectWidth > 0 &&
       this.state.rectWidth <= window.width;
 
-    if (this.lastValue !== isVisible && this.state.didUpdate) {
+    if (this.lastValue !== isVisible && this.didUpdate) {
       this.lastValue = isVisible;
       this.props.onChange(isVisible);
 
       if (this.count === 1) {
-      	this.setState({ didUpdate: this.props.didUpdate })
+      	this.setState({ didUpdate: this.didUpdate })
       }
 
       this.count++;
